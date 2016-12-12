@@ -5,7 +5,7 @@ import assert from 'assert';
 describe('generating triples', () => {
   let input = "Cold blooded jelly donut"
 
-  it('from empty input', () => {
+  it('generates triples from empty input', () => {
     assert.deepEqual(model('').triples, []);
   });
 
@@ -49,4 +49,21 @@ describe('building a lookup table', () => {
     );
   });
 
+});
+
+describe('generating output', () => {
+  let input = `
+ She had blue skin.
+ And so did he.
+ He kept it hid
+ And so did she.
+ They searched for blue
+ Their whole life through,
+ Then passed right by—
+ And never knew.
+`;
+
+  it('generates a new string', () => {
+    console.log(model(input).generate());
+  });
 });
