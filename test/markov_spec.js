@@ -1,18 +1,52 @@
 import { model } from '../lib/markov';
 import assert from 'assert';
 
-const input = 'A cold blooded jelly donut'
 
-describe('parses training data', () => {
-  it('generates triples', () => {
+describe('generating triples', () => {
+  let input = "Cold blooded jelly donut"
+
+  it('from empty input', () => {
+    assert.deepEqual(model('').triples, []);
+  });
+
+  it('from nonempty input', () => {
     assert.deepEqual(model(input).triples, [
-      ['A', 'cold', 'blooded'],
-      ['cold', 'blooded', 'jelly'],
+      ['Cold', 'blooded', 'jelly'],
       ['blooded', 'jelly', 'donut'],
     ]);
   });
 
-  it('handles empty input', () => {
-    assert.deepEqual(model('').triples, []);
+});
+
+
+describe('building a lookup table', () => {
+  let input = `
+    She had blue skin.
+    And so did he.
+    He kept it hid
+    And so did she.
+    They searched for blue
+    Their whole life through,
+    Then passed right by—
+    And never knew.
+  `;
+
+  it('from empty input', () => {
+    assert.deepEqual(model('').lookup, {});
   });
+
+  it('when repeated keys are present', () => {
+    assert.deepEqual(
+      model(input).lookup[['so', 'did']],
+      ['he.\n', 'she.\n']
+    );
+  });
+
+  it('when repeated triples are present', () => {
+    assert.deepEqual(
+      model(input).lookup[['And', 'so']],
+      ['did', 'did']
+    );
+  });
+
 });
