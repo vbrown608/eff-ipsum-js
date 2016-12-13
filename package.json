@@ -1,7 +1,7 @@
 {
   "name": "word-finder",
-  "version": "0.0.4-28",
-  "description": "A website that will help you with 'Whats the Phrase' and 'Words With Friends'",
+  "version": "1",
+  "description": "A website that generates EFF-flavored lorem ipsum'",
   "main": "server.js",
   "scripts": {
     "start": "node start.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/amirrajan/word-finder.git"
+    "url": "git://github.com/vbrown608/eff-ipsum-js.git"
   },
   "dependencies": {
     "babel-core": "^6.7.7",
