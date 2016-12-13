@@ -1,13 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { search } from './lib/words';
+import Model from './lib/markov';
 
 const app = express();
 
-const dictionary = JSON.parse(
-  fs.readFileSync('./lib/dictionary.json')
-).dictionary;
+const input = fs.readFileSync('./lib/training.txt', 'utf8');
+const model = Model(input);
 
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
@@ -17,14 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.render('index', { pattern: null });
+  res.render('index', { ipsum: '' });
 });
 
-app.post('/search', function (req, res) {
-  res.render('result', {
-    words: search(req.body.pattern, dictionary).result,
-    pattern: req.body.pattern
-  });
+app.post('/', (req, res) => {
+  res.render('index', { ipsum: model.generate(100) });
 });
 
 app.listen(process.env.PORT || 3000);

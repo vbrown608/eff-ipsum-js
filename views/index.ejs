@@ -1,5 +1,14 @@
-<% include header %>
+<!doctype html>
+<head>
+  <title>eff-ipsum</title>
+</head>
 
+<body>
+  <h1>eff-ipsum</h1>
 
+  <form action="/" method=post>
+    <input type=submit value="Generate">
+  </form>
 
-<% include footer %>
+  <textarea id="ipsum-response" rows="20" cols="50"><%= ipsum || '' %></textarea>
+</body>
