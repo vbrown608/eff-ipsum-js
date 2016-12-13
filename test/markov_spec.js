@@ -2,16 +2,7 @@ import mockery from 'mockery';
 import assert from 'assert';
 import * as _ from 'lodash';
 
-let input = `
- She had blue skin.
- And so did he.
- He kept it hid
- And so did she.
- They searched for blue
- Their whole life through,
- Then passed right by—
- And never knew.
-`;
+let input = 'This is a test - a test is what this is. What is this? A test - it is.';
 
 describe('markov model', () => {
   let markov;
@@ -19,7 +10,7 @@ describe('markov model', () => {
   before(() => {
     mockery.enable({warnOnUnregistered: false});
     _.random = () => { return 1; }
-    _.sample = (array) => { return array[0]; }
+    _.sample = (array) => { return _.last(array); }
     mockery.registerMock("lodash", _);
     markov = require('../lib/markov');
   });
@@ -35,17 +26,10 @@ describe('markov model', () => {
     ]);
   });
 
-  it('generates a lookup table with repeated keys', () => {
+  it('generates a lookup table', () => {
     assert.deepEqual(
-      markov.model(input).lookup[['so', 'did']],
-      ['he.\n', 'she.\n']
-    );
-  });
-
-  it('generates a lookup table with repeated triples', () => {
-    assert.deepEqual(
-      markov.model(input).lookup[['And', 'so']],
-      ['did', 'did']
+      markov.model(input).lookup[['a', 'test']],
+      ['-', 'is']
     );
   });
 
@@ -54,6 +38,9 @@ describe('markov model', () => {
   });
 
   it('generates novel output', () => {
-    console.log(markov.model(input).generate());
+    assert.equal(markov.model(input).generate(),
+      'is a test is what this is. What is this? ' +
+      'A test - it is a test is what this is. What is this? A test'
+    );
   });
 });
